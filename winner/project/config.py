@@ -11,6 +11,7 @@ class BaseConfig:
     # Force all queues to be explicitly listed in `CELERY_TASK_QUEUES` to help prevent typos
     ERROR_404_HELP = False
 
+
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
 

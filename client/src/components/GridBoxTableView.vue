@@ -1,7 +1,7 @@
 <script>
 export default {
-    props: ['winners']
-}
+  props: ["winners"],
+};
 </script>
 
 <template>

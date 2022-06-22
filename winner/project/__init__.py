@@ -1,13 +1,14 @@
 import os
 
 from flask import Flask
-from flask_socketio import SocketIO
 from flask_cors import CORS
+from flask_socketio import SocketIO
 
 from project.config import config
 
 socketio = SocketIO()
 cors = CORS()
+
 
 def create_app(config_name=None):
     if config_name is None:
@@ -16,8 +17,12 @@ def create_app(config_name=None):
     app = Flask(__name__)
 
     app.config.from_object(config[config_name])
-    
-    socketio.init_app(app, message_queue=app.config["SOCKETIO_MESSAGE_QUEUE"], cors_allowed_origins="*")
+
+    socketio.init_app(
+        app,
+        message_queue=app.config["SOCKETIO_MESSAGE_QUEUE"],
+        cors_allowed_origins="*",
+    )
 
     cors.init_app(app)
 

@@ -1,13 +1,13 @@
-version: '3.8'
+version: "3.8"
 
 services:
   api:
     build:
       context: ./server
       dockerfile: Dockerfile
-    command: ['python', 'manage.py', 'run', "-h", "0.0.0.0"]
+    command: ["python", "manage.py", "run", "-h", "0.0.0.0"]
     volumes:
-      - './server:/usr/src/app'
+      - "./server:/usr/src/app"
     ports:
       - 5004:5000
     environment:
@@ -16,14 +16,14 @@ services:
       - RABBIT_HOST=rabbitmq
     depends_on:
       - rabbitmq
-  
+
   worker:
     build:
       context: ./worker
       dockerfile: Dockerfile
-    command: ['python', 'main.py']
+    command: ["python", "main.py"]
     volumes:
-      - './worker:/usr/src/app'
+      - "./worker:/usr/src/app"
     environment:
       - RABBIT_USER=test
       - RABBIT_PASS=test
@@ -31,18 +31,28 @@ services:
     depends_on:
       - api
       - rabbitmq
-  
+
   winner:
     build:
       context: ./winner
       dockerfile: Dockerfile
-    command: ["gunicorn", "project.wsgi:app", "-k", "geventwebsocket.gunicorn.workers.GeventWebSocketWorker", "-w", "1", "--bind", "0.0.0.0:5000"]
+    command:
+      [
+        "gunicorn",
+        "project.wsgi:app",
+        "-k",
+        "geventwebsocket.gunicorn.workers.GeventWebSocketWorker",
+        "-w",
+        "1",
+        "--bind",
+        "0.0.0.0:5000",
+      ]
     ports:
       - 5005:5000
     volumes:
-    - './winner:/usr/src/app'
+      - "./winner:/usr/src/app"
     environment:
-    - SOCKETIO_MESSAGE_QUEUE=redis://redis:6379/0
+      - SOCKETIO_MESSAGE_QUEUE=redis://redis:6379/0
     depends_on:
       - redis
       - worker
@@ -63,6 +73,9 @@ services:
     ports:
       - 80:80
     volumes:
-      - './client:/app'
+      - "./client:/app"
+    depends_on:
+      - api
+      - winner
   redis:
     image: redis:7.0.2-alpine

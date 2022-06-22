@@ -6,15 +6,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from project.apis import alive, publish
 from project.utils import declare_queue
 
-
 log = logging.getLogger("uvicorn")
+
 
 def create_app() -> FastAPI:
     app = FastAPI()
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=['*']
-    )
+    app.add_middleware(CORSMiddleware, allow_origins=["*"])
 
     # * Adding Routers to app *#
     app.include_router(alive.router)
@@ -24,6 +21,7 @@ def create_app() -> FastAPI:
 
 
 app = create_app()
+
 
 @app.on_event("startup")
 async def startup_event():

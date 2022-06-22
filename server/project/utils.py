@@ -1,13 +1,14 @@
 import json
-from project.config import get_settings, Settings
+
 import aio_pika
+
+from project.config import Settings, get_settings
+
 
 async def publish_message(message) -> None:
     settings: Settings = get_settings()
     connection = await aio_pika.connect(
-        login=settings.rmq_user,
-        password=settings.rmq_pass,
-        host= settings.rmq_host
+        login=settings.rmq_user, password=settings.rmq_pass, host=settings.rmq_host
     )
     async with connection:
         routing_key = "test"
@@ -21,9 +22,7 @@ async def publish_message(message) -> None:
 async def declare_queue() -> None:
     settings: Settings = get_settings()
     connection = await aio_pika.connect(
-        login=settings.rmq_user,
-        password=settings.rmq_pass,
-        host= settings.rmq_host
+        login=settings.rmq_user, password=settings.rmq_pass, host=settings.rmq_host
     )
     async with connection:
         channel = await connection.channel()

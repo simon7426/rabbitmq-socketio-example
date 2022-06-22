@@ -2,7 +2,7 @@ import logging
 import os
 from functools import lru_cache
 
-from pydantic import AnyUrl, BaseSettings
+from pydantic import BaseSettings
 
 log = logging.getLogger("uvicorn")
 
@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     expiration: int = os.getenv("EXPIRATION_TIME", 3000)
     rmq_user: str = os.getenv("RABBIT_USER", "test")
     rmq_pass: str = os.getenv("RABBIT_PASS", "test")
-    rmq_host: str = os.getenv("RABBIT_HOST","localhost")
+    rmq_host: str = os.getenv("RABBIT_HOST", "localhost")
 
 
 @lru_cache

@@ -1,7 +1,6 @@
 from flask_restx import Api
 
 from project.api.alive import alive_namespace
-
 from project.api.events import winner_namespace
 
 api = Api(version="1.0", title="Winner announcer api", doc="/docs")

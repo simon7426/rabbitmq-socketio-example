@@ -1,15 +1,17 @@
 import asyncio
-import requests
 import json
 import os
 
 import aio_pika
+import requests
 
 count = 0
+
 
 async def update_user(user):
     url = f"http://winner:5000/api/v1/winner/update/{user}"
     requests.get(url)
+
 
 async def process_message(
     message: aio_pika.abc.AbstractIncomingMessage,
@@ -18,11 +20,12 @@ async def process_message(
         global count
         count += 1
         if count == 2:
-            body = json.loads(message.body.decode('utf-8'))
+            body = json.loads(message.body.decode("utf-8"))
             count = 0
             print(body)
             await update_user(body["user"])
             await asyncio.sleep(1)
+
 
 async def main() -> None:
     print("Started listening on Rabbitmq")

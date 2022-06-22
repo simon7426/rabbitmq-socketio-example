@@ -1,6 +1,6 @@
 <script setup>
 import { ref, inject } from "vue";
-import GridBoxTableView from './GridBoxTableView.vue'
+import GridBoxTableView from "./GridBoxTableView.vue";
 
 const socket = inject("socket");
 const winners = ref([]);
@@ -14,9 +14,12 @@ socket.on("status", (val) => {
     winners.value.pop();
   }
   if (val.winner != -1) {
-    winners.value.unshift({"winner": val.winner, "key": Math.floor(Math.random() * 10000000)});
+    winners.value.unshift({
+      winner: val.winner,
+      key: Math.floor(Math.random() * 10000000),
+    });
   }
-//   console.log(val.winner);
+  //   console.log(val.winner);
 });
 </script>
 

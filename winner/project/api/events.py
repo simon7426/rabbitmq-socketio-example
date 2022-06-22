@@ -1,7 +1,9 @@
 import os
-from flask_socketio import SocketIO, emit, join_room
-from project import socketio
+
 from flask_restx import Namespace, Resource
+from flask_socketio import SocketIO, join_room
+
+from project import socketio
 
 winner_namespace = Namespace("Winner")
 winner = -1
@@ -11,9 +13,7 @@ winner = -1
 class Winner(Resource):
     def get(self, winner_id):
         update_winner(winner_id)
-        return {
-            "message": f"Updated winner {winner_id}"
-        }
+        return {"message": f"Updated winner {winner_id}"}
 
 
 SOCKETIO_MESSAGE_QUEUE = os.environ.get(
@@ -25,10 +25,8 @@ socketio_instance = SocketIO(message_queue=SOCKETIO_MESSAGE_QUEUE)
 
 def update_winner(winner_id):
     global winner
-    winner  = winner_id
-    socketio_instance.emit(
-        "status", get_winner(), room="winner", namespace="/winner"
-    )
+    winner = winner_id
+    socketio_instance.emit("status", get_winner(), room="winner", namespace="/winner")
 
 
 def get_winner():
@@ -40,9 +38,7 @@ def get_winner():
 
 
 def update_celery_task_status():
-    socketio_instance.emit(
-        "status", get_winner(), room="winner", namespace="/winner"
-    )
+    socketio_instance.emit("status", get_winner(), room="winner", namespace="/winner")
 
 
 @socketio.on("join", namespace="/winner")
